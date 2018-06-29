@@ -16,7 +16,9 @@ class BmpNNFParser:
             for x in range(self.w_):
                 index = (y*self.w_ + x)*4
                 b = self.bytes_[index : index+4]
+                # Extracting one integer
                 pixel_v = struct.unpack('<i', b)[0]
+                # Parsing according to nn.h:50 macros
                 self.flow_[y][x] = [pixel_v & 0x0fff, pixel_v>>12 & 0x0fff]
 
     def __getitem__(self, index):

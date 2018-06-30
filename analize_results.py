@@ -18,8 +18,8 @@ def compare_l2_p2v_nnf(nnf1p, nnf2p):
 
     for y in range(nnf1.height):
         for x in range(nnf1.width):
-            nn1 = nnf1.get_pixel(x, y)
-            nn2 = nnf2.get_pixel(x, y)
+            nn1 = nnf1[y][x]
+            nn2 = nnf2[y][x]
             dist[y][x] = np.linalg.norm(nn1 - nn2)
 
     imgplot = plt.imshow(dist)

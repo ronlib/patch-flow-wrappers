@@ -3,8 +3,16 @@ import numpy as np
 from PIL import Image
 
 class BmpNNFParser:
-    def __init__(self, imagep):
-        self.image_ = Image.open(imagep)
+    """
+    This class parses flow .bmp files, and exposes an index access to the parsed
+    file.
+
+    p = FloParser('path')
+    p[y,x] or p[y][x] returns a 2-tuple, where the first value is the vertical NN,
+    location (y value), and the second is the horizontal location (x value).
+    """
+    def __init__(self, filep):
+        self.image_ = Image.open(filep)
         self.h_ = self.image_.height
         self.w_ = self.image_.width
         self.bytes_ = self.image_.tobytes()
@@ -18,8 +26,8 @@ class BmpNNFParser:
                 b = self.bytes_[index : index+4]
                 # Extracting one integer
                 pixel_v = struct.unpack('<i', b)[0]
-                # Parsing according to nn.h:50 macros
-                self.flow_[y][x] = [pixel_v & 0x0fff, pixel_v>>12 & 0x0fff]
+                # Parsing according to nn.h:50 macros. [vertical, horizontal]
+                self.flow_[y][x] = [pixel_v>>12 & 0x0fff, pixel_v & 0x0fff]
 
     def __getitem__(self, index):
         return self.flow_[index]
